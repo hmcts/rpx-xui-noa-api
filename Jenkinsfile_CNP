@@ -1,0 +1,26 @@
+#!groovy
+
+properties([
+    [
+        $class       : 'GithubProjectProperty',
+        displayName  : 'Notice of Acting Microservice',
+        projectUrlStr: 'https://github.com/hmcts/rpx-xui-noa-api'
+    ],
+    pipelineTriggers([
+        [$class: 'GitHubPushTrigger']
+    ])
+])
+
+@Library("Infrastructure")
+
+def type      = "nodejs"
+def product   = "xui"
+def component = "noa-api"
+
+withPipeline("nodejs", product, component) {
+
+    enableDockerBuild()
+
+    after('checkout') {sh 'yarn cache clean'}
+
+}
