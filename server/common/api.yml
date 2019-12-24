@@ -26,6 +26,35 @@ definitions:
       name:
         type: string
         example: no_stress
+  ConfirmationRequestBody:
+    type: object
+    title: confirmationRequest
+    required:
+      - clientName
+      - solicitorName
+      - solicitorOrganization
+      - caseId
+      - shortLink
+      - emailAddress
+    properties:
+      clientName: 
+        type: string
+        example: no_stress
+      solicitorName: 
+        type: string
+        example: no_stress
+      solicitorOrganization: 
+        type: string
+        example: no_stress
+      caseId: 
+        type: string
+        example: no_stress
+      shortLink: 
+        type: string
+        example: no_stress
+      emailAddress: 
+        type: string
+        example: no_stress
 
 paths:
   /examples:
@@ -66,6 +95,24 @@ paths:
           description: Return the example with the specified id
         404:
           description: Example not found
+
+  /emails/sendConfirmationRequest:
+    post:
+      tags:
+        - sendConfirmationRequest
+      description: Send Confirmation Request
+      parameters:
+        - name: confirmationRequest
+          in: body
+          description: an example
+          required: true
+          schema: 
+            $ref: "#/definitions/ConfirmationRequestBody"
+      responses:
+        200:
+          description: Request sent
+        404:
+          description: Request not sent
 
   /spec:
     get:
