@@ -5,8 +5,8 @@ info:
   description: Notice of Acting
 basePath: /api/v1
 tags:
-  - name: Examples
-    description: Simple example endpoints
+  - name: NoA
+    description: NoA endpoints
   - name: Specification
     description: The swagger API specification
 
@@ -17,102 +17,86 @@ produces:
 
 
 definitions:
-  ExampleBody:
+  NoaRequestBody:
     type: object
-    title: example
+    title: noaRequest
     required:
-      - name
+      - requester
+      - requestType
+      - caseJurisdiction
+      - caseType
+      - originatorEmail
+      - originatorIdam
+      - contact
     properties:
-      name:
+      requester:
+        type: object
+        example: no_stress
+      requestType: 
         type: string
         example: no_stress
-  ConfirmationRequestBody:
-    type: object
-    title: confirmationRequest
-    required:
-      - clientName
-      - solicitorName
-      - solicitorOrganization
-      - caseId
-      - shortLink
-      - emailAddress
-    properties:
-      clientName: 
+      caseJurisdiction: 
         type: string
         example: no_stress
-      solicitorName: 
+      caseType: 
         type: string
         example: no_stress
-      solicitorOrganization: 
+      originatorEmail: 
         type: string
         example: no_stress
-      caseId: 
+      originatorIdam: 
         type: string
         example: no_stress
-      shortLink: 
-        type: string
-        example: no_stress
-      emailAddress: 
-        type: string
+      contact:
+        type: object
         example: no_stress
 
 paths:
-  /examples:
-    get:
-      tags:
-        - Examples
-      description: Fetch all examples test
-      responses:
-        200:
-          description: Returns all examples
+
+  /noa/create/{caseid}/{email}:
     post:
       tags:
-        - Examples
-      description: Create a new example
+        - create
+      description: Validate and create NoA, send confirmation request
       parameters:
-        - name: example
-          in: body
-          description: an example
-          required: true
-          schema: 
-            $ref: "#/definitions/ExampleBody"
-      responses:
-        200:
-          description: Returns all examples
-
-  /examples/{id}:
-    get:
-      tags:
-        - Examples
-      parameters:
-        - name: id
+        - name: caseid
           in: path
+          description: Id of case
           required: true
-          description: The id of the example to retrieve
-          type: integer
-      responses:
-        200:
-          description: Return the example with the specified id
-        404:
-          description: Example not found
-
-  /emails/sendConfirmationRequest:
-    post:
-      tags:
-        - sendConfirmationRequest
-      description: Send Confirmation Request
-      parameters:
-        - name: confirmationRequest
+          type: string
+        - name: email
+          in: path
+          description: email of appellant
+          required: true
+          type: string
+        - name: noaRequest
           in: body
           description: an example
           required: true
           schema: 
-            $ref: "#/definitions/ConfirmationRequestBody"
+            $ref: "#/definitions/NoaRequestBody"
       responses:
         200:
           description: Request sent
         404:
           description: Request not sent
+
+  /noa/confirm/{uuid}:
+    post:
+      tags:
+        - confirm
+      description: Confirm NoA, send confirmation success
+      parameters:
+        - name: uuid
+          in: path
+          description: Id of case
+          required: true
+          type: string
+      responses:
+        200:
+          description: Success sent
+        404:
+          description: Success not sent
 
   /spec:
     get:

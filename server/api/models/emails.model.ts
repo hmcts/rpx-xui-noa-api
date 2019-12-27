@@ -1,3 +1,8 @@
+export interface EmailOptionsModel {
+  reference: string;
+  emailReplyToId?: string;
+}
+
 export interface ConfirmationResponse {
     id: string;
     reference: string;
@@ -22,8 +27,16 @@ export interface ConfirmationRequestPersonalisationModel {
     short_link: string;
 }
 
-export interface ConfirmationRequestOptionsModel {
+export interface ConfirmationRequestOptionsModel extends EmailOptionsModel {
     personalisation: ConfirmationRequestPersonalisationModel;
-    reference: string;
-    emailReplyToId?: string;
+}
+
+export interface ConfirmationSuccessPersonalisationModel {
+    client_name: string;
+    solicitor_name: string;
+    case_id: string;
+}
+
+export interface ConfirmationSuccessOptionsModel extends EmailOptionsModel {
+    personalisation: ConfirmationSuccessPersonalisationModel;
 }
